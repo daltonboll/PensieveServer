@@ -13,5 +13,7 @@
 
 class User < ActiveRecord::Base
 
+  # Define User roles
   enum role: { patient: 0, family: 1 }
+
 end
