@@ -23,7 +23,8 @@ class UsersController < ApplicationController
 
   # POST /users
   # POST /users.json
-  # Testing: curl -H "Content-Type: application/json" -X POST -d '{"name":"testy", "role":"patient", "email":"test@gmail.com", "password":"password"}' http://localhost:3000/api/users
+  # Testing patient creation: curl -H "Content-Type: application/json" -X POST -d '{"name":"testy", "role":"patient", "email":"test@gmail.com", "password":"password", "phone_number":"6083228874"}' http://localhost:3000/api/users
+  # Testing family member creation: curl -H "Content-Type: application/json" -X POST -d '{"name":"testy", "role":"family", "email":"test@gmail.com", "password":"password", "phone_number":"6083228874"}' http://localhost:3000/api/users
   def create
     @user = User.new(user_params)
 
@@ -70,6 +71,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :role)
+      params.require(:user).permit(:name, :email, :password, :role, :phone_number, :patient_phone_number)
     end
 end

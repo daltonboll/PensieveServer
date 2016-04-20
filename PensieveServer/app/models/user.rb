@@ -2,28 +2,38 @@
 #
 # Table name: users
 #
-#  id         :integer          not null, primary key
-#  name       :string           not null
-#  email      :string           not null
-#  password   :string           not null
-#  role       :integer          not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                   :integer          not null, primary key
+#  name                 :string
+#  email                :string
+#  password             :string
+#  role                 :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  phone_number         :string
+#  patient_phone_number :string
 #
 
 class User < ActiveRecord::Base
+
+  # Define User roles as an enum
+  enum role: [:patient, :family]
 
   # User attribute validations
   validates :name, presence: true
   validates :name, length: { minimum: 2, maximum: 30 }
   
   validates :email, presence: true
+  validates :email, uniqueness: true
+
+  validates :phone_number, presence: true
+  validates :phone_number, uniqueness: true
+
   validates :password, presence: true
   validates :role, presence: true
 
-  # Define User roles as an enum
-  enum role: [:patient, :family]
+  validates :patient_phone_number, presence: true, if: :family?
 
+  
   # Naive password matching for authentication, NOT secure
   def self.authenticate(user, password)
     return user.password == password
