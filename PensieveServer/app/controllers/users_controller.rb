@@ -23,6 +23,7 @@ class UsersController < ApplicationController
 
   # POST /users
   # POST /users.json
+  # Testing: curl -H "Content-Type: application/json" -X POST -d '{"name":"testy", "role":"patient", "email":"test@gmail.com", "password":"password"}' http://localhost:3000/api/login
   def create
     @user = User.new(user_params)
 
