@@ -30,7 +30,6 @@ class User < ActiveRecord::Base
 
   validates :password, presence: true
   validates :role, presence: true
-
   validates :patient_phone_number, presence: true, if: :family?
 
   
@@ -39,7 +38,7 @@ class User < ActiveRecord::Base
     return user.password == password
   end
 
-  # construct JSON for data representation of a user to be sent to the phone
+  # Construct JSON for data representation of a user to be sent to the phone
   def get_json_data
     data = {}
     data["name"] = self.name
@@ -49,7 +48,7 @@ class User < ActiveRecord::Base
     return data
   end
 
-  # returns whether this User is a "patient" or "family"
+  # Returns whether this User is a "patient" or "family"
   def get_role
     if self.patient?
       return "patient"
@@ -57,6 +56,36 @@ class User < ActiveRecord::Base
       return "family"
     else
       return "undefined"
+    end
+  end
+
+  # Returns a collection of this patient's family members, excluding the patient
+  def get_family_members_for_patient
+    if self.family?
+      return {}
+    else
+      family_members = User.where("patient_phone_number = #{self.phone_number} and phone_number != #{self.phone_number}")
+      return family_members
+    end
+  end
+
+  # Returns a collection of this family member's other family members, excluding themselves and the patient
+  def get_family_members_for_family_member
+    if self.patient?
+      return {}
+    else
+      family_members = User.where("patient_phone_number = #{self.patient_phone_number} and phone_number != #{self.phone_number}")
+      return family_members
+    end
+  end
+
+  # Returns this family member's patient
+  def get_patient_for_family_member
+    if self.patient?
+      return {}
+    else
+      patient = User.where("phone_number = #{self.patient_phone_number}").first
+      return patient
     end
   end
 
