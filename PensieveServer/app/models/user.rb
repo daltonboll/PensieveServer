@@ -13,7 +13,15 @@
 
 class User < ActiveRecord::Base
 
-  # Define User roles
+  # User attribute validations
+  validates :name, presence: true
+  validates :name, length: { minimum: 2, maximum: 30 }
+  
+  validates :email, presence: true
+  validates :password, presence: true
+  validates :role, presence: true
+
+  # Define User roles as an enum
   enum role: [:patient, :family]
 
   # Naive password matching for authentication, NOT secure
