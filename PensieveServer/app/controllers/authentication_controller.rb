@@ -13,7 +13,7 @@ class AuthenticationController < ApplicationController
 
   # POST /api/login
   # POST /api/login.json
-  # Testing: curl -H "Content-Type: application/json" -X POST -d '{"email":"grandma@mail.com","password":"password"}' http://localhost:3000/api/login
+  # Testing: curl -H "Content-Type: application/json" -X POST -d '{"email":"grandma@gmail.com","password":"password"}' http://localhost:3000/api/login
   # Attempt to login a User. If the login is successful, return the user profile information
   def login
     email = params["email"]

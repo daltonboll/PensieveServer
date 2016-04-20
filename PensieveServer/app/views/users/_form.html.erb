@@ -25,7 +25,7 @@
   </div>
   <div class="field">
     <%= f.label :role %><br>
-    <%= f.number_field :role %>
+    <%= select_tag("user[role]", options_for_select([['Patient', 'patient'], ['Family Member', 'family']] )) %>
   </div>
   <div class="actions">
     <%= f.submit %>

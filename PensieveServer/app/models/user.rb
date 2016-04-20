@@ -14,7 +14,7 @@
 class User < ActiveRecord::Base
 
   # Define User roles
-  enum role: { patient: 0, family: 1 }
+  enum role: [:patient, :family]
 
   # Naive password matching for authentication, NOT secure
   def self.authenticate(user, password)
@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
     data["name"] = self.name
     data["email"] = self.email
     data["role"] = self.get_role
+
+    return data
   end
 
   # returns whether this User is a "patient" or "family"
