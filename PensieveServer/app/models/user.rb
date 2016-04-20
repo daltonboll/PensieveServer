@@ -39,11 +39,37 @@ class User < ActiveRecord::Base
   end
 
   # Construct JSON for data representation of a user to be sent to the phone
-  def get_json_data
+  def get_user_json_data
     data = {}
+    data["id"] = self.id
     data["name"] = self.name
     data["email"] = self.email
     data["role"] = self.get_role
+    data["phone_number"] = self.phone_number
+
+    if self.family?
+      data["patient_phone_number"] = self.patient_phone_number
+    end
+
+    return data
+  end
+
+  # Construct JSON data representation for a user's entire famly to be sent to the phone
+  def get_relationship_json_data
+    data = {}
+    if self.patient?
+      patient = self
+    else
+      patient = User.find_by(phone_number: self.patient_phone_number)
+    end
+
+    data["patient"] = patient.get_user_json_data
+    data["family_members"] = []
+    family_members = patient.get_family_members_for_patient
+
+    family_members.each do |family_member|
+      data["family_members"].append(family_member.get_user_json_data)
+    end
 
     return data
   end

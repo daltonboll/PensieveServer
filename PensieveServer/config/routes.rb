@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # API Routing
   post 'api/login', to: 'authentication#login', defaults: { format: 'json' } # user login
   post 'api/users', to: 'users#create', defaults: { format: 'json' } # user creation
+  get 'api/users/:id', to: 'users#get_user_info', defaults: { format: 'json' } # get single user info
+  get 'api/users/:id/relationships', to: 'users#get_user_relationships_info', defaults: { format: 'json' } # get all relationships for the user
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -63,6 +63,64 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /api/users/:id
+  # Testing patient get info: curl -H "Content-Type: application/json" -X GET http://localhost:3000/api/users/3
+  # Testing family member get info: curl -H "Content-Type: application/json" -X GET http://localhost:3000/api/users/4
+  def get_user_info
+    id = params["id"]
+    error_list = []
+    status = 1
+    json_response = {}
+    user = User.find_by(id: id)
+
+    if user.nil?
+      error_list.append("Error: The specified user doesn't exist.")
+      status = -1
+    else
+      json_response["user"] = user.get_user_json_data
+    end
+
+    if status == -1
+      json_response["errors"] = error_list
+    end
+
+    # Format the json_response into proper JSON and respond with it
+    json_response = json_response.to_json
+
+    respond_to do |format|
+      format.json { render json: json_response }
+    end
+  end
+
+  # GET /api/users/:id/relationships
+  # Testing patient get info: curl -H "Content-Type: application/json" -X GET http://localhost:3000/api/users/3/relationships
+  # Testing family member get info: curl -H "Content-Type: application/json" -X GET http://localhost:3000/api/users/4/relationship
+  def get_user_relationships_info
+    id = params["id"]
+    error_list = []
+    status = 1
+    json_response = {}
+    user = User.find_by(id: id)
+
+    if user.nil?
+      error_list.append("Error: The specified user doesn't exist.")
+      status = -1
+    else
+      json_response["relationships"] = user.get_relationship_json_data
+    end
+
+    if status == -1
+      json_response["errors"] = error_list
+    end
+
+    # Format the json_response into proper JSON and respond with it
+    json_response = json_response.to_json
+
+    respond_to do |format|
+      format.json { render json: json_response }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
