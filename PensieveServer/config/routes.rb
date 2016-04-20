@@ -1,10 +1,9 @@
 Rails.application.routes.draw do
 
   resources :users
-  resources :users
-  # API Routing
 
-  # User Sessions Routing
+  # API Routing
+  post 'api/login', to: 'authentication#login', defaults: { format: 'json' }
 
 
   # The priority is based upon order of creation: first created -> highest priority.
