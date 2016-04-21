@@ -7,7 +7,7 @@ The Pensieve server is hosted on Heroku and runs on Ruby on Rails, and is used b
 
 ### Server API documentation
 
-Note: For the most up-to-date API documentation, see the Pensieve Android appliction GitHub repository. All API calls are expected to be sent and received in JSON. 
+Note: For the most up-to-date API documentation, see the Pensieve Android application [GitHub repository](https://github.com/cs160-sp16/Group-5-Project). All API calls are expected to be sent and received in JSON. 
 
 **1. User Account Creation**
 
