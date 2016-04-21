@@ -36,7 +36,10 @@ class UsersController < ApplicationController
       if @user.patient_exists and @user.save
         json_response["status"] = status
         json_response["user"] = @user.get_user_json_data
-        json_response["relationships"] = @user.get_relationship_json_data
+
+        if @user.family?
+          json_response["relationships"] = @user.get_relationship_json_data
+        end
 
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: json_response }
