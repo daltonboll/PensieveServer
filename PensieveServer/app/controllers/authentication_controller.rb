@@ -49,7 +49,7 @@ class AuthenticationController < ApplicationController
         status = -1
       else
         # authentication successful - return user information
-        json_response["user"] = user.get_json_data
+        json_response["user"] = user.get_user_json_data
       end
     end
 
