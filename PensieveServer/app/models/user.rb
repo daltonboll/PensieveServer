@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
     if self.family?
       return {}
     else
-      family_members = User.where("patient_phone_number = #{self.phone_number} and phone_number != #{self.phone_number}")
+      family_members = User.where("patient_phone_number = '#{self.phone_number}' and phone_number != '#{self.phone_number}'")
       return family_members
     end
   end
@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
     if self.patient?
       return {}
     else
-      family_members = User.where("patient_phone_number = #{self.patient_phone_number} and phone_number != #{self.phone_number}")
+      family_members = User.where("patient_phone_number = '#{self.patient_phone_number}' and phone_number != '#{self.phone_number}'")
       return family_members
     end
   end

@@ -58,6 +58,8 @@ class AuthenticationController < ApplicationController
       json_response["errors"] = error_list
     end
 
+    json_response["status"] = status
+
     # Format the json_response into proper JSON and respond with it
     json_response = json_response.to_json
 

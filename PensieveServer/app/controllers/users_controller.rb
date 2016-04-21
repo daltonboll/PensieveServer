@@ -24,21 +24,34 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   # Testing patient creation: curl -H "Content-Type: application/json" -X POST -d '{"name":"testy", "role":"patient", "email":"test@gmail.com", "password":"password", "phone_number":"6083228874"}' http://localhost:3000/api/users
-  # Testing family member creation: curl -H "Content-Type: application/json" -X POST -d '{"name":"testy", "role":"family", "email":"test@gmail.com", "password":"password", "phone_number":"6083228874"}' http://localhost:3000/api/users
+  # Testing family member creation: curl -H "Content-Type: application/json" -X POST -d '{"name":"testy", "role":"family", "email":"test@gmail.com", "password":"password", "phone_number":"1231412344", "patient_phone_number":"6083228874"}' http://localhost:3000/api/users
   def create
     @user = User.new(user_params)
+    error_list = []
+    status = 1
+    json_response = {}
+
 
     respond_to do |format|
       if @user.patient_exists and @user.save
+        json_response["status"] = status
+        json_response["user"] = @user.get_user_json_data
+        json_response["relationships"] = @user.get_relationship_json_data
+
         format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        format.json { render json: json_response }
       else
+        status = -1
+        json_response["status"] = status
+
         if not @user.patient_exists
           @user.errors.add(:patient_phone_number, "Error: You must first create a valid patient account before creating a family member account.")
         end
 
+        json_response["errors"] = @user.errors
+
         format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: json_response, status: :unprocessable_entity }
       end
     end
   end
@@ -88,6 +101,8 @@ class UsersController < ApplicationController
       json_response["errors"] = error_list
     end
 
+    json_response["status"] = status
+
     # Format the json_response into proper JSON and respond with it
     json_response = json_response.to_json
 
@@ -116,6 +131,8 @@ class UsersController < ApplicationController
     if status == -1
       json_response["errors"] = error_list
     end
+
+    json_response["status"] = status
 
     # Format the json_response into proper JSON and respond with it
     json_response = json_response.to_json
