@@ -51,8 +51,8 @@ class AuthenticationController < ApplicationController
         # authentication successful - return user information
         json_response["user"] = user.get_user_json_data
 
-        if @user.family?
-          json_response["relationships"] = @user.get_relationship_json_data
+        if user.family?
+          json_response["relationships"] = user.get_relationship_json_data
         end
       end
     end
