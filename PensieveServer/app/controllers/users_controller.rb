@@ -29,10 +29,14 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     respond_to do |format|
-      if @user.save
+      if @user.patient_exists and @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
+        if not @user.patient_exists
+          @user.errors.add(:patient_phone_number, "Error: You must first create a valid patient account before creating a family member account.")
+        end
+
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end

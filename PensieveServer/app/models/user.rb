@@ -115,4 +115,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Returns true if a patient already exists for this family member
+  def patient_exists
+    if self.patient?
+      return true
+    else
+      patient = User.find_by(phone_number: self.patient_phone_number)
+      if patient.nil?
+        return false
+      else
+        return true
+      end
+    end
+  end
+
 end
